@@ -150,13 +150,6 @@ public class MizLib {
         return key;
     }
 
-    public static String getTvdbApiKey(Context context) {
-        String key = context.getString(R.string.tvdb_api_key);
-        if (TextUtils.isEmpty(key) || key.equals("add_your_own"))
-            throw new RuntimeException("You need to add a TVDb API key!");
-        return key;
-    }
-
     public static boolean isVideoFile(String s) {
         String[] fileTypes = new String[]{".3gp",".aaf.","mp4",".ts",".webm",".m4v",".mkv",".divx",".xvid",".rec",".avi",".flv",".f4v",".moi",".mpeg",".mpg",".mts",".m2ts",".ogv",".rm",".rmvb",".mov",".wmv",".iso",".vob",".ifo",".wtv",".pyv",".ogm",".img"};
         int count = fileTypes.length;

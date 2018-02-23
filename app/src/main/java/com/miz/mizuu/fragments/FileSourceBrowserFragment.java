@@ -32,7 +32,7 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -575,7 +575,7 @@ public class FileSourceBrowserFragment extends Fragment {
 	}
 
 	private void updateSubtitle() {
-		((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(mBrowser.getSubtitle());
+		((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(mBrowser.getSubtitle());
 	}
 
 	private ServiceConnection serviceConnection = new ServiceConnection() {

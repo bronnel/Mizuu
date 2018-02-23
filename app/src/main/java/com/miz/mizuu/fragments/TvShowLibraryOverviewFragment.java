@@ -19,7 +19,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +45,7 @@ public class TvShowLibraryOverviewFragment extends Fragment {
         View v = inflater.inflate(R.layout.viewpager_with_tabs, container, false);
 
         if (MizLib.hasLollipop())
-            ((ActionBarActivity) getActivity()).getSupportActionBar().setElevation(0);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setElevation(0);
 
         mViewPager = (ViewPager) v.findViewById(R.id.awesomepager);
         mViewPager.setPageMargin(MizLib.convertDpToPixels(getActivity(), 16));

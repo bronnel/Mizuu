@@ -36,7 +36,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
@@ -223,7 +223,7 @@ public class MovieDetailsFragment extends Fragment {
         ViewUtils.setProperToolbarSize(mContext, mToolbar);
 
         ((MizActivity) getActivity()).setSupportActionBar(mToolbar);
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // This needs to be re-initialized here and not in onCreate()
         mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.horizontal_grid_item_width);

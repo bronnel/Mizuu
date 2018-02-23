@@ -8,7 +8,7 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -44,7 +44,8 @@ public class EditTvShowEpisodeFragment extends Fragment {
     private EditText mTitle, mDescription, mDirector, mWriter, mGuestStars;
     private Button mRating, mReleaseDate;
 
-    public EditTvShowEpisodeFragment() {} // Empty constructor
+    public EditTvShowEpisodeFragment() {
+    } // Empty constructor
 
     public static EditTvShowEpisodeFragment newInstance(String showId, int season, int episode) {
         EditTvShowEpisodeFragment fragment = new EditTvShowEpisodeFragment();
@@ -104,8 +105,9 @@ public class EditTvShowEpisodeFragment extends Fragment {
             mTitle.setSelection(mEpisode.getTitle().length());
 
             // Set description
-            if (!mEpisode.getDescription().equals(getString(R.string.stringNoPlot)))
+            if (!mEpisode.getDescription().equals(getString(R.string.stringNoPlot))) {
                 mDescription.setText(mEpisode.getDescription());
+            }
 
             // Set director
             mDirector.setText(mEpisode.getDirector());
@@ -169,7 +171,8 @@ public class EditTvShowEpisodeFragment extends Fragment {
                         cursor.getString(cursor.getColumnIndex(DbAdapterTvShowEpisodes.KEY_SEASON)),
                         cursor.getString(cursor.getColumnIndex(DbAdapterTvShowEpisodes.KEY_EPISODE))
                 ));
-            } catch (Exception e) {} finally {
+            } catch (Exception e) {
+            } finally {
                 cursor.close();
             }
         }
@@ -241,7 +244,7 @@ public class EditTvShowEpisodeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

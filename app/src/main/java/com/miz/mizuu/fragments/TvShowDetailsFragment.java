@@ -32,7 +32,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
@@ -112,7 +112,8 @@ public class TvShowDetailsFragment extends Fragment {
     /**
      * Empty constructor as per the Fragment documentation
      */
-    public TvShowDetailsFragment() {}
+    public TvShowDetailsFragment() {
+    }
 
     public static TvShowDetailsFragment newInstance(String showId) {
         TvShowDetailsFragment pageFragment = new TvShowDetailsFragment();
@@ -201,7 +202,7 @@ public class TvShowDetailsFragment extends Fragment {
         ViewUtils.setProperToolbarSize(mContext, mToolbar);
 
         ((MizActivity) getActivity()).setSupportActionBar(mToolbar);
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // This needs to be re-initialized here and not in onCreate()
         mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.horizontal_grid_item_width);
@@ -235,8 +236,9 @@ public class TvShowDetailsFragment extends Fragment {
                 });
             }
         });
-        if (MizLib.isTablet(mContext))
+        if (MizLib.isTablet(mContext)) {
             mFab.setType(FloatingActionButton.TYPE_NORMAL);
+        }
 
         // Get rid of these...
         v.findViewById(R.id.textView3).setVisibility(View.GONE); // File
@@ -299,8 +301,9 @@ public class TvShowDetailsFragment extends Fragment {
         textPlot.setEllipsize(TextUtils.TruncateAt.END);
         textPlot.setFocusable(true);
 
-        if (MizLib.isTablet(getActivity()))
+        if (MizLib.isTablet(getActivity())) {
             textPlot.setLineSpacing(0, 1.15f);
+        }
 
         textPlot.setText(thisShow.getDescription());
 
@@ -392,7 +395,7 @@ public class TvShowDetailsFragment extends Fragment {
             @Override
             public void onSuccess() {
                 if (mPaletteLoader == null) {
-                    mPaletteLoader = new PaletteLoader(mPicasso, Uri.parse(thisShow.getCoverPhoto().toString()), new PaletteLoader.OnPaletteLoadedCallback() {
+                    mPaletteLoader = new PaletteLoader(mPicasso, Uri.fromFile(thisShow.getCoverPhoto()), new PaletteLoader.OnPaletteLoadedCallback() {
                         @Override
                         public void onPaletteLoaded(int swatchColor) {
                             mToolbarColor = swatchColor;
@@ -432,14 +435,16 @@ public class TvShowDetailsFragment extends Fragment {
             mPicasso.load(thisShow.getBackdrop()).skipMemoryCache().placeholder(R.drawable.bg).into(background, new Callback() {
                 @Override
                 public void onError() {
-                    if (!isAdded())
+                    if (!isAdded()) {
                         return;
+                    }
 
                     mPicasso.load(thisShow.getThumbnail()).skipMemoryCache().placeholder(R.drawable.bg).error(R.drawable.bg).into(background);
                 }
 
                 @Override
-                public void onSuccess() {}
+                public void onSuccess() {
+                }
             });
         }
     }
@@ -501,8 +506,9 @@ public class TvShowDetailsFragment extends Fragment {
         inflater.inflate(R.menu.tv_show_details, menu);
 
         // If this is a tablet, we have more room to display icons
-        if (MizLib.isTablet(mContext))
+        if (MizLib.isTablet(mContext)) {
             menu.findItem(R.id.share).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
 
         // Favourite
         menu.findItem(R.id.show_fav).setIcon(thisShow.isFavorite() ?
@@ -575,7 +581,9 @@ public class TvShowDetailsFragment extends Fragment {
 
             LocalBroadcastUtils.updateTvShowLibrary(mContext);
 
-        } else Toast.makeText(mContext, getString(R.string.errorOccured), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(mContext, getString(R.string.errorOccured), Toast.LENGTH_SHORT).show();
+        }
 
         new Thread() {
             @Override
@@ -681,7 +689,8 @@ public class TvShowDetailsFragment extends Fragment {
                     }
 
                 }
-            } catch (Exception e) {} finally {
+            } catch (Exception e) {
+            } finally {
                 cursor.close();
             }
 
@@ -692,7 +701,8 @@ public class TvShowDetailsFragment extends Fragment {
             } else {
                 Toast.makeText(mContext, R.string.no_episodes_to_play, Toast.LENGTH_SHORT).show();
             }
-        };
+        }
+        ;
 
     }
 

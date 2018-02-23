@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.graphics.Palette;
+import android.util.Log;
 import android.view.View;
 
 import com.melnykov.fab.FloatingActionButton;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public class PaletteLoader extends AsyncTask<Void, Void, Palette> {
 
+    private static final String TAG = PaletteLoader.class.getSimpleName();
     private final Picasso mPicasso;
     private final String mKey;
     private final Uri mImage;
@@ -69,8 +71,10 @@ public class PaletteLoader extends AsyncTask<Void, Void, Palette> {
 
         if (palette == null) {
             try {
-                palette = Palette.generate(mPicasso.load(getImage()).get());
-            } catch (IOException e) {}
+                palette = Palette.from(mPicasso.load(getImage()).get()).generate();
+            } catch (IOException |IllegalStateException e) {
+                Log.d(TAG, "doInBackground: ",e);
+            }
         }
 
         return palette;

@@ -14,20 +14,25 @@ package com.miz.utils;/*
  * limitations under the License.
  */
 
-import org.apache.http.conn.util.InetAddressUtils;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class NetworkUtils {
+
+    private static final Pattern IPV4_PATTERN =
+            Pattern.compile(
+                    "^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$");
 
     /**
      * Get IP address from first non-localhost interface.
      * Taken from http://stackoverflow.com/a/13007325/762442.
-     * @param useIPv4  true=return ipv4, false=return ipv6
-     * @return  address or empty string
+     *
+     * @param useIPv4 true=return ipv4, false=return ipv6
+     * @return address or empty string
      */
     public static String getIPAddress(boolean useIPv4) {
         try {
@@ -37,21 +42,28 @@ public class NetworkUtils {
                 for (InetAddress addr : addrs) {
                     if (!addr.isLoopbackAddress()) {
                         String sAddr = addr.getHostAddress().toUpperCase();
-                        boolean isIPv4 = InetAddressUtils.isIPv4Address(sAddr);
+                        boolean isIPv4 = isIPv4Address(sAddr);
                         if (useIPv4) {
-                            if (isIPv4)
+                            if (isIPv4) {
                                 return sAddr;
+                            }
                         } else {
                             if (!isIPv4) {
                                 int delim = sAddr.indexOf('%'); // drop ip6 port suffix
-                                return delim<0 ? sAddr : sAddr.substring(0, delim);
+                                return delim < 0 ? sAddr : sAddr.substring(0, delim);
                             }
                         }
                     }
                 }
             }
-        } catch (Exception ex) { } // for now eat exceptions
+        } catch (Exception ex) {
+        } // for now eat exceptions
         return "";
     }
+
+    public static boolean isIPv4Address(final String input) {
+        return IPV4_PATTERN.matcher(input).matches();
+    }
+
 
 }

@@ -1,19 +1,24 @@
 apply plugin: 'com.android.application'
+apply from: "$rootDir/keys.gradle"
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "com.miz.mizuu"
         minSdkVersion 15
-        targetSdkVersion 21
+        targetSdkVersion 27
 
         testApplicationId "com.miz.test"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
 
         renderscriptTargetApi 21
         renderscriptSupportModeEnabled true
+
+        resValue "string", "tmdb_api_key", "\"${tmdb_api_key}\""
+        resValue "string", "trakt_api_key", "\"${trakt_api_key}\""
+
     }
 
     buildTypes {
@@ -36,19 +41,19 @@ repositories {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:21.0.3'
-    compile 'com.google.guava:guava:18.0'
-    compile 'com.android.support:support-v4:21.0.3'
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.android.support:palette-v7:21.0.3'
-    compile 'com.android.support:recyclerview-v7:21.0.3'
-    compile 'com.android.support:cardview-v7:21.0.0'
+    compile 'com.android.support:support-v4:27.0.2'
+    compile 'com.google.guava:guava:24.0-android'
+    compile 'com.android.support:support-v4:27.0.2'
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:palette-v7:27.0.2'
+    compile 'com.android.support:recyclerview-v7:27.0.2'
+    compile 'com.android.support:cardview-v7:27.0.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp:okhttp:2.7.2'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
-    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
-    compile 'com.squareup.okhttp3:okhttp:3.0.1'
-    compile 'com.squareup.okio:okio:1.2.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.okhttp3:okhttp:3.9.0'
+    compile 'com.squareup.okio:okio:1.13.0'
     compile 'com.squareup:otto:1.3.4'
     compile 'com.melnykov:floatingactionbutton:1.1.0'
     compile 'com.github.ksoichiro:android-observablescrollview:1.4.0'

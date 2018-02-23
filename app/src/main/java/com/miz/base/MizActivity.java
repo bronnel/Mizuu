@@ -17,13 +17,13 @@
 package com.miz.base;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.miz.functions.MizLib;
 import com.miz.mizuu.R;
 
-public abstract class MizActivity extends ActionBarActivity {
+public abstract class MizActivity extends AppCompatActivity {
 
     public Toolbar mToolbar;
 
@@ -44,8 +44,9 @@ public abstract class MizActivity extends ActionBarActivity {
     @Override
     public void setSupportActionBar(Toolbar toolbar) {
         try {
-            if (MizLib.hasLollipop())
+            if (MizLib.hasLollipop()) {
                 toolbar.setElevation(1f);
+            }
 
             super.setSupportActionBar(toolbar);
         } catch (Throwable t) {

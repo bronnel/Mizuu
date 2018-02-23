@@ -3,7 +3,7 @@
 
     <declare-styleable name="ForegroundLinearLayout">
         <attr name="android:foreground" />
-        <attr name="android:foregroundInsidePadding" />
+        <attr name="foregroundLayoutInsidePadding" />
         <attr name="android:foregroundGravity" />
     </declare-styleable>
     <declare-styleable name="FloatingActionButton">

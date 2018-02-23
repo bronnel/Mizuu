@@ -36,9 +36,10 @@
         <item name="colorControlActivated">#fff</item>
         <item name="colorControlHighlight">#fff</item>
         <item name="colorSwitchThumbNormal">#b0b0b0</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Mizuu.Theme.Overview" parent="Mizuu.Theme" >
+    <style name="Mizuu.Theme.Overview" parent="Mizuu.Theme">
 
     </style>
 
@@ -78,7 +79,8 @@
         <item name="android:editTextStyle">@style/RobotoEditTextStyle</item>
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="android:checkboxStyle">@style/CheckBoxAppTheme</item>
-        <item name="android:actionOverflowButtonStyle">@style/Mizuu.Theme.ActionButton.Overflow</item>
+        <item name="android:actionOverflowButtonStyle">@style/Mizuu.Theme.ActionButton.Overflow
+        </item>
         <item name="android:actionBarStyle">@style/Mizuu.Theme.Preference.ActionBar</item>
     </style>
 
@@ -93,6 +95,6 @@
         <item name="android:layout_gravity">right</item>
     </style>
 
-    <style name="Mizuu.Theme.Dialog" parent="android:style/Theme.Holo.Dialog" />
+    <style name="Mizuu.Theme.Dialog" parent="android:style/Theme.Holo.Dialog"/>
 
 </resources>
