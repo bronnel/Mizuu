@@ -19,8 +19,8 @@ package com.miz.functions;
 
 import android.graphics.drawable.Drawable;
 
-import org.teleal.cling.model.meta.Device;
-import org.teleal.cling.model.types.UDN;
+import org.fourthline.cling.model.meta.Device;
+import org.fourthline.cling.model.types.UDN;
 
 /**
  * Wraps a <tt>Device</tt> for display with icon and label. Equality is

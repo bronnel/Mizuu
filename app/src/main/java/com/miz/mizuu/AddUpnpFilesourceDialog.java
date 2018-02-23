@@ -32,12 +32,12 @@ import android.widget.ListView;
 import com.miz.functions.FileSource;
 import com.miz.service.WireUpnpService;
 
-import org.teleal.cling.android.AndroidUpnpService;
-import org.teleal.cling.model.meta.Device;
-import org.teleal.cling.model.meta.LocalDevice;
-import org.teleal.cling.model.meta.RemoteDevice;
-import org.teleal.cling.registry.DefaultRegistryListener;
-import org.teleal.cling.registry.Registry;
+import org.fourthline.cling.android.AndroidUpnpService;
+import org.fourthline.cling.model.meta.Device;
+import org.fourthline.cling.model.meta.LocalDevice;
+import org.fourthline.cling.model.meta.RemoteDevice;
+import org.fourthline.cling.registry.DefaultRegistryListener;
+import org.fourthline.cling.registry.Registry;
 
 import static com.miz.functions.MizLib.FILESOURCE;
 import static com.miz.functions.MizLib.MOVIE;

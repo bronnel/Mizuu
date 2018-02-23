@@ -26,6 +26,11 @@ android {
             minifyEnabled false
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/beans.xml'
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
@@ -42,12 +47,12 @@ repositories {
 
 dependencies {
     compile 'com.android.support:support-v4:27.0.2'
-    compile 'com.google.guava:guava:24.0-android'
     compile 'com.android.support:support-v4:27.0.2'
     compile 'com.android.support:appcompat-v7:27.0.2'
     compile 'com.android.support:palette-v7:27.0.2'
     compile 'com.android.support:recyclerview-v7:27.0.2'
     compile 'com.android.support:cardview-v7:27.0.2'
+    compile 'com.google.guava:guava:24.0-android'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp:okhttp:2.7.2'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
@@ -58,8 +63,15 @@ dependencies {
     compile 'com.melnykov:floatingactionbutton:1.1.0'
     compile 'com.github.ksoichiro:android-observablescrollview:1.4.0'
     compile 'com.jpardogo.materialtabstrip:library:1.0.7'
-    compile files('libs/cling-core-1.0.5.jar')
-    compile files('libs/cling-support-1.0.5.jar')
+    //Cling (UPNP support)
+    def JETTY_VERSION = "8.2.0.v20160908"
+    compile group: 'org.fourthline.cling', name: 'cling-core', version:'2.1.1'
+    compile group: 'org.fourthline.cling', name: 'cling-support', version:'2.1.1'
+    compile group: 'org.eclipse.jetty', name: 'jetty-server', version: JETTY_VERSION
+    compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version: JETTY_VERSION
+    compile group: 'org.eclipse.jetty', name: 'jetty-client', version: JETTY_VERSION
+    // compile files('libs/cling-core-1.0.5.jar')
+   // compile files('libs/cling-support-1.0.5.jar')
     compile files('libs/jcifs.jar')
     compile files('libs/teleal-common-1.0.13.jar')
 

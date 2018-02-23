@@ -16,10 +16,10 @@
 
 package com.miz.functions;
 
-import org.teleal.cling.model.meta.Service;
-import org.teleal.cling.support.model.DIDLObject;
-import org.teleal.cling.support.model.container.Container;
-import org.teleal.cling.support.model.item.Item;
+import org.fourthline.cling.model.meta.Service;
+import org.fourthline.cling.support.model.DIDLObject;
+import org.fourthline.cling.support.model.container.Container;
+import org.fourthline.cling.support.model.item.Item;
 
 public class ContentItem {
 	

@@ -18,9 +18,9 @@ package com.miz.filesources;
 
 import com.miz.abstractclasses.AbstractFileSourceBrowser;
 
-import org.teleal.cling.model.meta.Device;
-import org.teleal.cling.model.meta.Service;
-import org.teleal.cling.support.model.container.Container;
+import org.fourthline.cling.model.meta.Device;
+import org.fourthline.cling.model.meta.Service;
+import org.fourthline.cling.support.model.container.Container;
 
 import java.util.HashMap;
 
