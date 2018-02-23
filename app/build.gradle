@@ -16,8 +16,8 @@ android {
         renderscriptTargetApi 21
         renderscriptSupportModeEnabled true
 
-        resValue "string", "tmdb_api_key", "\"${tmdb_api_key}\""
-        resValue "string", "trakt_api_key", "\"${trakt_api_key}\""
+        resValue "string", "tmdb_api_key", "${tmdb_api_key}"
+        resValue "string", "trakt_api_key", "${trakt_api_key}"
 
     }
 
