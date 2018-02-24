@@ -73,11 +73,6 @@ import com.miz.service.MovieLibraryUpdate;
 import com.miz.service.TvShowsLibraryUpdate;
 import com.miz.utils.FileUtils;
 import com.miz.utils.ViewUtils;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -109,6 +104,11 @@ import java.util.regex.Pattern;
 
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static com.miz.functions.PreferenceKeys.INCLUDE_ADULT_CONTENT;
 import static com.miz.functions.PreferenceKeys.SCHEDULED_UPDATES_MOVIE;
@@ -141,32 +141,37 @@ public class MizLib {
     public static final int DAY = 24 * HOUR;
     public static final int WEEK = 7 * DAY;
 
-    private MizLib() {} // No instantiation
+    private MizLib() {
+    } // No instantiation
 
     public static String getTmdbApiKey(Context context) {
         String key = context.getString(R.string.tmdb_api_key);
-        if (TextUtils.isEmpty(key) || key.equals("add_your_own"))
+        if (TextUtils.isEmpty(key) || key.equals("add_your_own")) {
             throw new RuntimeException("You need to add a TMDb API key!");
+        }
         return key;
     }
 
     public static boolean isVideoFile(String s) {
-        String[] fileTypes = new String[]{".3gp",".aaf.","mp4",".ts",".webm",".m4v",".mkv",".divx",".xvid",".rec",".avi",".flv",".f4v",".moi",".mpeg",".mpg",".mts",".m2ts",".ogv",".rm",".rmvb",".mov",".wmv",".iso",".vob",".ifo",".wtv",".pyv",".ogm",".img"};
+        String[] fileTypes = new String[]{".3gp", ".aaf.", "mp4", ".ts", ".webm", ".m4v", ".mkv", ".divx", ".xvid", ".rec", ".avi", ".flv", ".f4v", ".moi", ".mpeg", ".mpg", ".mts", ".m2ts", ".ogv", ".rm", ".rmvb", ".mov", ".wmv", ".iso", ".vob", ".ifo", ".wtv", ".pyv", ".ogm", ".img"};
         int count = fileTypes.length;
         for (int i = 0; i < count; i++)
-            if (s.endsWith(fileTypes[i]))
+            if (s.endsWith(fileTypes[i])) {
                 return true;
+            }
         return false;
     }
 
     /**
      * Converts the first character of a String to upper case.
+     *
      * @param s (input String)
      * @return Input String with first character in upper case.
      */
     public static String toCapitalFirstChar(String s) {
-        if (TextUtils.isEmpty(s))
+        if (TextUtils.isEmpty(s)) {
             return "";
+        }
 
         return s.substring(0, 1).toUpperCase(Locale.ENGLISH) + s.substring(1, s.length());
     }
@@ -174,12 +179,14 @@ public class MizLib {
     /**
      * Converts the first character of all words (separated by space)
      * in the String to upper case.
+     *
      * @param s (input String)
      * @return Input string with first character of all words in upper case.
      */
     public static String toCapitalWords(String s) {
-        if (TextUtils.isEmpty(s))
+        if (TextUtils.isEmpty(s)) {
             return "";
+        }
 
         StringBuilder result = new StringBuilder();
         String[] split = s.split("\\s");
@@ -191,56 +198,66 @@ public class MizLib {
 
     /**
      * Adds spaces between capital characters.
+     *
      * @param s (input String)
      * @return Input string with spaces between capital characters.
      */
     public static String addSpaceByCapital(String s) {
-        if (TextUtils.isEmpty(s))
+        if (TextUtils.isEmpty(s)) {
             return "";
+        }
 
         StringBuilder result = new StringBuilder();
         char[] chars = s.toCharArray();
         for (int i = 0; i < chars.length; i++)
-            if (chars.length > (i+1))
-                if (Character.isUpperCase(chars[i]) && (Character.isLowerCase(chars[i+1]) && !Character.isSpaceChar(chars[i+1])))
+            if (chars.length > (i + 1)) {
+                if (Character.isUpperCase(chars[i]) && (Character.isLowerCase(chars[i + 1]) && !Character.isSpaceChar(chars[i + 1]))) {
                     result.append(" ").append(chars[i]);
-                else
+                } else {
                     result.append(chars[i]);
-            else
+                }
+            } else {
                 result.append(chars[i]);
+            }
         return result.toString().trim();
     }
 
     /**
      * Returns any digits (numbers) in a String
+     *
      * @param s (Input string)
      * @return A string with any digits from the input string
      */
     public static String getNumbersInString(String s) {
-        if (TextUtils.isEmpty(s))
+        if (TextUtils.isEmpty(s)) {
             return "";
+        }
 
         StringBuilder result = new StringBuilder();
         char[] charArray = s.toCharArray();
         int count = charArray.length;
         for (int i = 0; i < count; i++)
-            if (Character.isDigit(charArray[i]))
+            if (Character.isDigit(charArray[i])) {
                 result.append(charArray[i]);
+            }
 
         return result.toString();
     }
 
     public static int getCharacterCountInString(String source, char c) {
         int result = 0;
-        if (!TextUtils.isEmpty(source))
+        if (!TextUtils.isEmpty(source)) {
             for (int i = 0; i < source.length(); i++)
-                if (source.charAt(i) == c)
+                if (source.charAt(i) == c) {
                     result++;
+                }
+        }
         return result;
     }
 
     /**
      * Determines if the application is running on a tablet
+     *
      * @param c - Context of the application
      * @return True if running on a tablet, false if on a smartphone
      */
@@ -250,6 +267,7 @@ public class MizLib {
 
     /**
      * Determines if the application is running on a xlarge tablet
+     *
      * @param c - Context of the application
      * @return True if running on a xlarge tablet, false if on a smaller device
      */
@@ -259,6 +277,7 @@ public class MizLib {
 
     /**
      * Determines if the device is in portrait mode
+     *
      * @param c - Context of the application
      * @return True if portrait mode, false if landscape mode
      */
@@ -268,6 +287,7 @@ public class MizLib {
 
     /**
      * Determines if the device is currently connected to a network
+     *
      * @param c - Context of the application
      * @return True if connected to a network, else false
      */
@@ -276,30 +296,35 @@ public class MizLib {
         NetworkInfo[] netInfo = cm.getAllNetworkInfo();
         int count = netInfo.length;
         for (int i = 0; i < count; i++)
-            if (netInfo[i] != null && netInfo[i].isConnected()) return true;
+            if (netInfo[i] != null && netInfo[i].isConnected()) {
+                return true;
+            }
         return false;
     }
 
     /**
      * Determines if the device is currently connected to a WiFi or Ethernet network
+     *
      * @param c - Context of the application
      * @return True if connected to a network, else false
      */
     public static boolean isWifiConnected(Context c) {
-        if (c!= null) {
+        if (c != null) {
             ConnectivityManager connManager = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo[] connections = connManager.getAllNetworkInfo();
             int count = connections.length;
             for (int i = 0; i < count; i++)
-                if (connections[i]!= null && connections[i].getType() == ConnectivityManager.TYPE_WIFI && connections[i].isConnectedOrConnecting() ||
-                        connections[i]!= null &&  connections[i].getType() == ConnectivityManager.TYPE_ETHERNET && connections[i].isConnectedOrConnecting())
+                if (connections[i] != null && connections[i].getType() == ConnectivityManager.TYPE_WIFI && connections[i].isConnectedOrConnecting() ||
+                        connections[i] != null && connections[i].getType() == ConnectivityManager.TYPE_ETHERNET && connections[i].isConnectedOrConnecting()) {
                     return true;
+                }
         }
         return false;
     }
 
     /**
      * Returns a custom theme background image as Bitmap.
+     *
      * @param height
      * @param width
      * @return Bitmap with the background image
@@ -315,8 +340,11 @@ public class MizLib {
             float scaleWidth = bm.getWidth() / ((float) width);
             float scaleHeight = bm.getHeight() / ((float) height);
 
-            if (scaleWidth > scaleHeight) bm = Bitmap.createScaledBitmap(bm, (int)(bm.getWidth() / scaleHeight), (int)(bm.getHeight() / scaleHeight), true);
-            else bm = Bitmap.createScaledBitmap(bm, (int)(bm.getWidth() / scaleWidth), (int)(bm.getHeight() / scaleWidth), true);
+            if (scaleWidth > scaleHeight) {
+                bm = Bitmap.createScaledBitmap(bm, (int) (bm.getWidth() / scaleHeight), (int) (bm.getHeight() / scaleHeight), true);
+            } else {
+                bm = Bitmap.createScaledBitmap(bm, (int) (bm.getWidth() / scaleWidth), (int) (bm.getHeight() / scaleWidth), true);
+            }
 
             bm = Bitmap.createBitmap(bm, (bm.getWidth() - width) / 2, (bm.getHeight() - height) / 2, width, height);
             return bm;
@@ -331,89 +359,107 @@ public class MizLib {
 
     /**
      * Returns the input file size as a string in either KB, MB or GB
+     *
      * @param size (as bytes)
      * @return Size as readable string
      */
     public static String filesizeToString(long size) {
-        if ((size / GB) >= 1) return substring(String.valueOf(((double) size / (double) GB)), 4) + " GB"; // GB
-        else if ((size / MB) >= 1) return (size / MB) + " MB"; // MB
-        else return (size / KB) + " KB"; // KB
+        if ((size / GB) >= 1) {
+            return substring(String.valueOf(((double) size / (double) GB)), 4) + " GB"; // GB
+        } else if ((size / MB) >= 1) {
+            return (size / MB) + " MB"; // MB
+        } else {
+            return (size / KB) + " KB"; // KB
+        }
     }
 
     /**
      * Returns a string with a length trimmed to the specified max length
+     *
      * @param s
      * @param maxLength
      * @return String with a length of the specified max length
      */
     public static String substring(String s, int maxLength) {
-        if (s.length() >= maxLength) return s.substring(0, maxLength);
-        else return s;
+        if (s.length() >= maxLength) {
+            return s.substring(0, maxLength);
+        } else {
+            return s;
+        }
     }
 
     /**
      * Add a padding with a height of the ActionBar to the top of a given View
+     *
      * @param c
      * @param v
      */
     public static void addActionBarPadding(Context c, View v) {
         int mActionBarHeight = 0;
         TypedValue tv = new TypedValue();
-        if (c.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+        if (c.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             mActionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, c.getResources().getDisplayMetrics());
-        else
+        } else {
             mActionBarHeight = 0; // No ActionBar style (pre-Honeycomb or ActionBar not in theme)
+        }
 
         v.setPadding(0, mActionBarHeight, 0, 0);
     }
 
     /**
      * Add a padding with a combined height of the ActionBar and Status bar to the top of a given View
+     *
      * @param c
      * @param v
      */
     public static void addActionBarAndStatusBarPadding(Context c, View v) {
         int mActionBarHeight = 0, mStatusBarHeight = 0;
         TypedValue tv = new TypedValue();
-        if (c.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+        if (c.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             mActionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, c.getResources().getDisplayMetrics());
-        else
+        } else {
             mActionBarHeight = 0; // No ActionBar style (pre-Honeycomb or ActionBar not in theme)
+        }
 
-        if (hasKitKat())
+        if (hasKitKat()) {
             mStatusBarHeight = convertDpToPixels(c, 25);
+        }
 
         v.setPadding(0, mActionBarHeight + mStatusBarHeight, 0, 0);
     }
 
     /**
      * Add a padding with a height of the ActionBar to the bottom of a given View
+     *
      * @param c
      * @param v
      */
     public static void addActionBarPaddingBottom(Context c, View v) {
         int mActionBarHeight = 0;
         TypedValue tv = new TypedValue();
-        if (c.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+        if (c.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             mActionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, c.getResources().getDisplayMetrics());
-        else
+        } else {
             mActionBarHeight = 0; // No ActionBar style (pre-Honeycomb or ActionBar not in theme)
+        }
 
         v.setPadding(0, 0, 0, mActionBarHeight);
     }
 
     /**
      * Add a margin with a height of the ActionBar to the top of a given View contained in a FrameLayout
+     *
      * @param c
      * @param v
      */
     public static void addActionBarMargin(Context c, View v) {
         int mActionBarHeight = 0;
         TypedValue tv = new TypedValue();
-        if (c.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+        if (c.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             mActionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, c.getResources().getDisplayMetrics());
-        else
+        } else {
             mActionBarHeight = 0; // No ActionBar style (pre-Honeycomb or ActionBar not in theme)
+        }
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         params.setMargins(0, mActionBarHeight, 0, 0);
@@ -422,19 +468,22 @@ public class MizLib {
 
     /**
      * Add a margin with a combined height of the ActionBar and Status bar to the top of a given View contained in a FrameLayout
+     *
      * @param c
      * @param v
      */
     public static void addActionBarAndStatusBarMargin(Context c, View v) {
         int mActionBarHeight = 0, mStatusBarHeight = 0;
         TypedValue tv = new TypedValue();
-        if (c.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+        if (c.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             mActionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, c.getResources().getDisplayMetrics());
-        else
+        } else {
             mActionBarHeight = 0; // No ActionBar style (pre-Honeycomb or ActionBar not in theme)
+        }
 
-        if (hasKitKat())
+        if (hasKitKat()) {
             mStatusBarHeight = convertDpToPixels(c, 25);
+        }
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         params.setMargins(0, mActionBarHeight + mStatusBarHeight, 0, 0);
@@ -444,19 +493,22 @@ public class MizLib {
 
     /**
      * Add a margin with a combined height of the ActionBar and Status bar to the top of a given View contained in a FrameLayout
+     *
      * @param c
      * @param v
      */
     public static void addActionBarAndStatusBarMargin(Context c, View v, FrameLayout.LayoutParams layoutParams) {
         int mActionBarHeight = 0, mStatusBarHeight = 0;
         TypedValue tv = new TypedValue();
-        if (c.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+        if (c.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             mActionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, c.getResources().getDisplayMetrics());
-        else
+        } else {
             mActionBarHeight = 0; // No ActionBar style (pre-Honeycomb or ActionBar not in theme)
+        }
 
-        if (hasKitKat())
+        if (hasKitKat()) {
             mStatusBarHeight = convertDpToPixels(c, 25);
+        }
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         params.setMargins(0, mActionBarHeight + mStatusBarHeight, 0, 0);
@@ -466,16 +518,18 @@ public class MizLib {
 
     /**
      * Add a margin with a height of the ActionBar to the top of a given View contained in a FrameLayout
+     *
      * @param c
      * @param v
      */
     public static void addActionBarMarginBottom(Context c, View v) {
         int mActionBarHeight = 0;
         TypedValue tv = new TypedValue();
-        if (c.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+        if (c.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             mActionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, c.getResources().getDisplayMetrics());
-        else
+        } else {
             mActionBarHeight = 0; // No ActionBar style (pre-Honeycomb or ActionBar not in theme)
+        }
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         params.setMargins(0, 0, 0, mActionBarHeight);
@@ -538,10 +592,11 @@ public class MizLib {
     public static int getActionBarHeight(Context c) {
         int actionBarHeight = 0;
         TypedValue tv = new TypedValue();
-        if (c.getTheme().resolveAttribute(R.attr.actionBarSize, tv, true))
+        if (c.getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)) {
             actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, c.getResources().getDisplayMetrics());
-        else
+        } else {
             actionBarHeight = 0; // No ActionBar style (pre-Honeycomb or ActionBar not in theme)
+        }
 
         return actionBarHeight;
     }
@@ -595,12 +650,13 @@ public class MizLib {
         if (numColumns > 0) {
             final int columnWidth = (Math.max(size.x, size.y) / numColumns) - mImageThumbSpacing;
 
-            if (columnWidth > 320)
+            if (columnWidth > 320) {
                 return 440;
-            else if (columnWidth > 240)
+            } else if (columnWidth > 240) {
                 return 320;
-            else if (columnWidth > 180)
+            } else if (columnWidth > 180) {
                 return 240;
+            }
         }
 
         return 180;
@@ -624,16 +680,17 @@ public class MizLib {
 
             int imageWidth = 0;
 
-            if (columnWidth > 300)
+            if (columnWidth > 300) {
                 imageWidth = 500;
-            else if (columnWidth > 240)
+            } else if (columnWidth > 240) {
                 imageWidth = 320;
-            else if (columnWidth > 180)
+            } else if (columnWidth > 180) {
                 imageWidth = 240;
-            else
+            } else {
                 imageWidth = 180;
+            }
 
-            if (new File(filepath).exists())
+            if (new File(filepath).exists()) {
                 try {
                     Bitmap bm = decodeSampledBitmapFromFile(filepath, imageWidth, (int) (imageWidth * 1.5));
                     bm = Bitmap.createScaledBitmap(bm, imageWidth, (int) (imageWidth * 1.5), true);
@@ -641,7 +698,9 @@ public class MizLib {
                     bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
                     out.close();
                     bm.recycle();
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
+            }
         }
     }
 
@@ -660,10 +719,11 @@ public class MizLib {
         if (numColumns > 0) {
             final int columnWidth = (Math.max(size.x, size.y) / numColumns) - mImageThumbSpacing;
 
-            if (columnWidth > 300)
+            if (columnWidth > 300) {
                 return "w500";
-            else if (columnWidth > 185)
+            } else if (columnWidth > 185) {
                 return "w300";
+            }
         }
 
         return "w185";
@@ -679,9 +739,11 @@ public class MizLib {
         final int width = Math.max(size.x, size.y);
 
         if (width > 1280 && isTablet(c)) // We only want to download full size images on tablets, as these are the only devices where you can see the difference
+        {
             return "original";
-        else if (width > 780)
+        } else if (width > 780) {
             return "w1280";
+        }
         return "w780";
     }
 
@@ -694,10 +756,12 @@ public class MizLib {
 
         final int width = Math.min(size.x, size.y);
 
-        if (width >= 780)
+        if (width >= 780) {
             return "w780";
-        if (width >= 400)
+        }
+        if (width >= 400) {
             return "w500";
+        }
         return "w300";
     }
 
@@ -716,11 +780,13 @@ public class MizLib {
         if (numColumns > 0) {
             final int columnWidth = (Math.max(size.x, size.y) / numColumns) - mImageThumbSpacing;
 
-            if (columnWidth > 400)
+            if (columnWidth > 400) {
                 return "h632";
+            }
 
-            if (columnWidth >= 300)
+            if (columnWidth >= 300) {
                 return "w300";
+            }
         }
 
         return "w185";
@@ -728,16 +794,18 @@ public class MizLib {
 
     public static boolean checkFileTypes(String file) {
         // We don't want to include files that start with ._ or .DS_Store
-        if (file.matches("(?i).*[/][\\.](?:_|DS_Store).*[\\.].*$"))
+        if (file.matches("(?i).*[/][\\.](?:_|DS_Store).*[\\.].*$")) {
             return false;
+        }
 
         if (file.contains(".")) { // Must have a file type
             String type = file.substring(file.lastIndexOf("."));
             String[] filetypes = allFileTypes.split("\\.");
             int count = filetypes.length;
             for (int i = 0; i < count; i++)
-                if (type.toLowerCase(Locale.ENGLISH).equals("." + filetypes[i]))
+                if (type.toLowerCase(Locale.ENGLISH).equals("." + filetypes[i])) {
                     return true;
+                }
         }
         return false;
     }
@@ -764,6 +832,7 @@ public class MizLib {
 
     /**
      * Returns a blurred bitmap. It uses a RenderScript to blur the bitmap very fast.
+     *
      * @param context
      * @param originalBitmap
      * @param radius
@@ -784,8 +853,9 @@ public class MizLib {
     }
 
     public static boolean downloadFile(String url, String savePath) {
-        if (TextUtils.isEmpty(url))
+        if (TextUtils.isEmpty(url)) {
             return false;
+        }
 
         InputStream in = null;
         OutputStream fileos = null;
@@ -799,18 +869,19 @@ public class MizLib {
                     .build();
 
             Response response = MizuuApplication.getOkHttpClient().newCall(request).execute();
-            if (!response.isSuccessful())
+            if (!response.isSuccessful()) {
                 return false;
+            }
 
             fileos = new BufferedOutputStream(new FileOutputStream(savePath));
             in = new BufferedInputStream(response.body().byteStream(), bufferSize);
 
             retVal = new byte[bufferSize];
             int length = 0;
-            while((length = in.read(retVal)) > -1) {
+            while ((length = in.read(retVal)) > -1) {
                 fileos.write(retVal, 0, length);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             // The download failed, so let's delete whatever was downloaded
             deleteFile(new File(savePath));
 
@@ -820,13 +891,15 @@ public class MizLib {
                 try {
                     fileos.flush();
                     fileos.close();
-                } catch (IOException e) {}
+                } catch (IOException e) {
+                }
             }
 
             if (in != null) {
                 try {
                     in.close();
-                } catch (IOException e) {}
+                } catch (IOException e) {
+                }
             }
         }
 
@@ -859,8 +932,9 @@ public class MizLib {
     public static String getStringFromJSONObject(JSONObject json, String name, String fallback) {
         try {
             String s = json.getString(name);
-            if (s.equals("null"))
+            if (s.equals("null")) {
                 return fallback;
+            }
             return s;
         } catch (Exception e) {
             return fallback;
@@ -884,16 +958,19 @@ public class MizLib {
     }
 
     public static String removeIndexZero(String s) {
-        if (!TextUtils.isEmpty(s))
+        if (!TextUtils.isEmpty(s)) {
             try {
                 return String.valueOf(Integer.parseInt(s));
-            } catch (NumberFormatException e) {}
+            } catch (NumberFormatException e) {
+            }
+        }
         return s;
     }
 
     public static String addIndexZero(String s) {
-        if (TextUtils.isEmpty(s))
+        if (TextUtils.isEmpty(s)) {
             return "00";
+        }
         try {
             return String.format(Locale.ENGLISH, "%02d", Integer.parseInt(s));
         } catch (NumberFormatException e) {
@@ -921,10 +998,11 @@ public class MizLib {
         DbAdapterSources dbHelperSources = MizuuApplication.getSourcesAdapter();
 
         Cursor c = null;
-        if (type == TYPE_MOVIE)
+        if (type == TYPE_MOVIE) {
             c = dbHelperSources.fetchAllMovieSources();
-        else
+        } else {
             c = dbHelperSources.fetchAllShowSources();
+        }
 
         ColumnIndexCache cache = new ColumnIndexCache();
 
@@ -990,10 +1068,13 @@ public class MizLib {
     }
 
     public static int COVER = 1, BACKDROP = 2;
-    public static SmbFile getCustomCoverArt(String filepath, SmbLogin auth, int type) throws MalformedURLException, UnsupportedEncodingException, SmbException {
+
+    public static SmbFile getCustomCoverArt(String filepath, SmbLogin auth, int type)
+            throws MalformedURLException, UnsupportedEncodingException, SmbException {
         String parentPath = filepath.substring(0, filepath.lastIndexOf("/"));
-        if (!parentPath.endsWith("/"))
+        if (!parentPath.endsWith("/")) {
             parentPath += "/";
+        }
 
         String filename = filepath.substring(0, filepath.lastIndexOf(".")).replaceAll("part[1-9]|cd[1-9]", "").trim();
 
@@ -1075,13 +1156,14 @@ public class MizLib {
             }
         }
 
-        if (!TextUtils.isEmpty(customCoverArt))
+        if (!TextUtils.isEmpty(customCoverArt)) {
             return new SmbFile(createSmbLoginString(
                     auth.getDomain(),
                     auth.getUsername(),
                     auth.getPassword(),
                     customCoverArt,
                     false));
+        }
 
         return null;
     }
@@ -1091,12 +1173,14 @@ public class MizLib {
     public static boolean isSubtitleFile(String s) {
         int count = subtitleFormats.length;
         for (int i = 0; i < count; i++)
-            if (s.endsWith(subtitleFormats[i]))
+            if (s.endsWith(subtitleFormats[i])) {
                 return true;
+            }
         return false;
     }
 
-    public static List<SmbFile> getSubtitleFiles(String filepath, SmbLogin auth) throws MalformedURLException, UnsupportedEncodingException {
+    public static List<SmbFile> getSubtitleFiles(String filepath, SmbLogin auth)
+            throws MalformedURLException, UnsupportedEncodingException {
         ArrayList<SmbFile> subs = new ArrayList<SmbFile>();
 
         String fileType = "";
@@ -1119,6 +1203,7 @@ public class MizLib {
 
     /**
      * A bit of a hack to properly delete files / folders from the OS
+     *
      * @param f
      * @return
      */
@@ -1132,13 +1217,16 @@ public class MizLib {
 
         try {
             user = URLEncoder.encode(user, "utf-8");
-        } catch (UnsupportedEncodingException e) {}
+        } catch (UnsupportedEncodingException e) {
+        }
         try {
             password = URLEncoder.encode(password, "utf-8");
-        } catch (UnsupportedEncodingException e) {}
+        } catch (UnsupportedEncodingException e) {
+        }
         try {
             domain = URLEncoder.encode(domain, "utf-8");
-        } catch (UnsupportedEncodingException e) {}
+        } catch (UnsupportedEncodingException e) {
+        }
 
         user = user.replace("+", "%20");
         password = password.replace("+", "%20");
@@ -1148,24 +1236,28 @@ public class MizLib {
         // Only add domain, username and password details if the username isn't empty
         if (!TextUtils.isEmpty(user)) {
             // Add the domain details
-            if (!TextUtils.isEmpty(domain))
+            if (!TextUtils.isEmpty(domain)) {
                 sb.append(domain).append(";");
+            }
 
             // Add username
             sb.append(user);
 
             // Add password
-            if (!TextUtils.isEmpty(password))
+            if (!TextUtils.isEmpty(password)) {
                 sb.append(":").append(password);
+            }
 
             sb.append("@");
         }
 
         sb.append(server);
 
-        if (isFolder)
-            if (!server.endsWith("/"))
+        if (isFolder) {
+            if (!server.endsWith("/")) {
                 sb.append("/");
+            }
+        }
 
         return sb.toString();
     }
@@ -1204,13 +1296,16 @@ public class MizLib {
                 if (listFiles != null) {
                     int count = listFiles.length;
                     for (int i = 0; i < count; i++)
-                        if (listFiles[i].getName().startsWith(thisShow.getId() + "_S"))
+                        if (listFiles[i].getName().startsWith(thisShow.getId() + "_S")) {
                             MizLib.deleteFile(listFiles[i]);
+                        }
                 }
-            } catch (NullPointerException e) {} // No file to delete
+            } catch (NullPointerException e) {
+            } // No file to delete
         } else {
-            if (showToast)
+            if (showToast) {
                 Toast.makeText(c, c.getString(R.string.failedToRemoveShow), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -1220,11 +1315,13 @@ public class MizLib {
         Pattern compiledPattern = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
         Matcher matcher = compiledPattern.matcher(url);
 
-        if (matcher.find(1))
+        if (matcher.find(1)) {
             return getYTId(matcher.group(1));
+        }
 
-        if (matcher.find(0))
+        if (matcher.find(0)) {
             return getYTId(matcher.group(0));
+        }
 
         return url;
     }
@@ -1284,7 +1381,8 @@ public class MizLib {
                 .build();
     }
 
-    public static Request getTraktAuthenticationRequest(String url, String username, String password) throws JSONException {
+    public static Request getTraktAuthenticationRequest(String url, String username, String password)
+            throws JSONException {
         JSONObject holder = new JSONObject();
         holder.put("username", username);
         holder.put("password", password);
@@ -1436,14 +1534,16 @@ public class MizLib {
     public static String decryptImdbId(String filename) {
         Pattern p = Pattern.compile("(tt\\d{7})");
         Matcher m = p.matcher(filename);
-        if (m.find())
+        if (m.find()) {
             return m.group(1);
+        }
         return null;
     }
 
     public static String decryptName(String input, String customTags) {
-        if (TextUtils.isEmpty(input))
+        if (TextUtils.isEmpty(input)) {
             return "";
+        }
 
         String output = getNameFromFilename(input);
         output = fixAbbreviations(output);
@@ -1455,11 +1555,13 @@ public class MizLib {
             if (output.matches("(?i)^\\[SET .*\\].*?")) {
                 try {
                     after = output.substring(output.indexOf("]") + 1, output.length());
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
             }
 
-            if (!TextUtils.isEmpty(after))
+            if (!TextUtils.isEmpty(after)) {
                 output = after;
+            }
         }
 
         output = output.replaceAll(WAREZ_PATTERN + "|\\)|\\(|\\[|\\]|\\{|\\}|\\'|\\<|\\>|\\-", "");
@@ -1477,7 +1579,8 @@ public class MizLib {
             for (int i = 0; i < count; i++)
                 try {
                     output = output.replaceAll("(?i)" + custom[i], "");
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
         }
 
         output = output.replaceAll("\\s\\-\\s|\\.|\\,|\\_", " "); // Remove separators
@@ -1500,10 +1603,12 @@ public class MizLib {
         while (searchMatcher.find())
             lastIndex = searchMatcher.end();
 
-        if (lastIndex > 0)
+        if (lastIndex > 0) {
             try {
                 return input.substring(0, lastIndex - 4);
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
+        }
 
         return input;
     }
@@ -1521,7 +1626,8 @@ public class MizLib {
             try {
                 int lastIndex = searchMatcher.end();
                 result = input.substring(lastIndex - 4, lastIndex);
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
         }
 
         return result;
@@ -1530,11 +1636,11 @@ public class MizLib {
     /**
      * Decode and sample down a bitmap from a file to the requested width and height.
      *
-     * @param filename The full path of the file to decode
-     * @param reqWidth The requested width of the resulting bitmap
+     * @param filename  The full path of the file to decode
+     * @param reqWidth  The requested width of the resulting bitmap
      * @param reqHeight The requested height of the resulting bitmap
      * @return A bitmap sampled down from the original with the same aspect ratio and dimensions
-     *         that are equal to or greater than the requested width and height
+     * that are equal to or greater than the requested width and height
      */
     public static Bitmap decodeSampledBitmapFromFile(String filename,
                                                      int reqWidth, int reqHeight) {
@@ -1558,12 +1664,12 @@ public class MizLib {
     /**
      * Decode and sample down a bitmap from resources to the requested width and height.
      *
-     * @param res The resources object containing the image data
-     * @param resId The resource id of the image data
-     * @param reqWidth The requested width of the resulting bitmap
+     * @param res       The resources object containing the image data
+     * @param resId     The resource id of the image data
+     * @param reqWidth  The requested width of the resulting bitmap
      * @param reqHeight The requested height of the resulting bitmap
      * @return A bitmap sampled down from the original with the same aspect ratio and dimensions
-     *         that are equal to or greater than the requested width and height
+     * that are equal to or greater than the requested width and height
      */
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
                                                          int reqWidth, int reqHeight) {
@@ -1589,9 +1695,9 @@ public class MizLib {
      * ensure a power of 2 is returned for inSampleSize which can be faster when decoding but
      * results in a larger bitmap which isn't as useful for caching purposes.
      *
-     * @param options An options object with out* params already populated (run through a decode*
-     *            method with inJustDecodeBounds==true
-     * @param reqWidth The requested width of the resulting bitmap
+     * @param options   An options object with out* params already populated (run through a decode*
+     *                  method with inJustDecodeBounds==true
+     * @param reqWidth  The requested width of the resulting bitmap
      * @param reqHeight The requested height of the resulting bitmap
      * @return The value to be used for inSampleSize
      */
@@ -1633,10 +1739,11 @@ public class MizLib {
     @SuppressWarnings("deprecation")
     public static long getFreeMemory() {
         StatFs stat = new StatFs(Environment.getDataDirectory().getPath());
-        if (hasJellyBeanMR2())
+        if (hasJellyBeanMR2()) {
             return stat.getAvailableBlocksLong() * stat.getBlockSizeLong();
-        else
+        } else {
             return stat.getAvailableBlocks() * stat.getBlockSize();
+        }
     }
 
     private static String[] MEDIA_APPS = new String[]{"com.imdb.mobile", "com.google.android.youtube", "com.ted.android", "com.google.android.videos", "se.mtg.freetv.tv3_dk", "tv.twitch.android.viewer",
@@ -1646,12 +1753,14 @@ public class MizLib {
 
     public static boolean isMediaApp(ApplicationInfo ai) {
         for (int i = 0; i < MEDIA_APPS.length; i++)
-            if (MEDIA_APPS[i].equals(ai.packageName))
+            if (MEDIA_APPS[i].equals(ai.packageName)) {
                 return true;
+            }
         return false;
     }
 
     private static int mRuntimeInMinutes;
+
     public static String getRuntimeInMinutesOrHours(String runtime, String hour, String minute) {
         mRuntimeInMinutes = Integer.valueOf(runtime);
         if (mRuntimeInMinutes >= 60) {
@@ -1661,19 +1770,23 @@ public class MizLib {
     }
 
     public static int getPartNumberFromFilepath(String filepath) {
-        if (filepath.matches(".*part[1-9].*"))
+        if (filepath.matches(".*part[1-9].*")) {
             filepath = filepath.substring(filepath.lastIndexOf("part") + 4, filepath.length());
-        else if (filepath.matches(".*cd[1-9].*"))
+        } else if (filepath.matches(".*cd[1-9].*")) {
             filepath = filepath.substring(filepath.lastIndexOf("cd") + 2, filepath.length());
+        }
 
         filepath = filepath.substring(0, 1);
 
         try {
             return Integer.valueOf(filepath);
-        } catch (NumberFormatException nfe) { return 0; }
+        } catch (NumberFormatException nfe) {
+            return 0;
+        }
     }
 
-    public static List<String> getSplitParts(String filepath, SmbLogin auth) throws MalformedURLException, UnsupportedEncodingException, SmbException {
+    public static List<String> getSplitParts(String filepath, SmbLogin auth)
+            throws MalformedURLException, UnsupportedEncodingException, SmbException {
         ArrayList<String> parts = new ArrayList<String>();
 
         String fileType = "";
@@ -1681,17 +1794,19 @@ public class MizLib {
             fileType = filepath.substring(filepath.lastIndexOf("."));
         }
 
-        if (filepath.matches(".*part[1-9].*"))
+        if (filepath.matches(".*part[1-9].*")) {
             filepath = filepath.substring(0, filepath.lastIndexOf("part") + 4);
-        else if (filepath.matches(".*cd[1-9].*"))
+        } else if (filepath.matches(".*cd[1-9].*")) {
             filepath = filepath.substring(0, filepath.lastIndexOf("cd") + 2);
+        }
 
         if (auth == null) { // Check if it's a local file
             File temp;
             for (int i = 1; i < 10; i++) {
                 temp = new File(filepath + i + fileType);
-                if (temp.exists())
+                if (temp.exists()) {
                     parts.add(temp.getAbsolutePath());
+                }
             }
         } else { // It's a network file
             SmbFile temp;
@@ -1702,8 +1817,9 @@ public class MizLib {
                         auth.getPassword(),
                         filepath + i + fileType,
                         false));
-                if (temp.exists())
+                if (temp.exists()) {
                     parts.add(temp.getPath());
+                }
             }
         }
 
@@ -1711,8 +1827,9 @@ public class MizLib {
     }
 
     public static String transformSmbPath(String smbPath) {
-        if (smbPath.contains("smb") && smbPath.contains("@"))
+        if (smbPath.contains("smb") && smbPath.contains("@")) {
             return "smb://" + smbPath.substring(smbPath.indexOf("@") + 1);
+        }
         return smbPath.replace("/smb:/", "smb://");
     }
 
@@ -1760,12 +1877,14 @@ public class MizLib {
         ArrayList<File> files = new ArrayList<File>();
 
         File[] f = MizuuApplication.getMovieBackdropFolder(c).listFiles();
-        if (f != null)
+        if (f != null) {
             Collections.addAll(files, f);
+        }
 
         f = MizuuApplication.getTvShowBackdropFolder(c).listFiles();
-        if (f != null)
+        if (f != null) {
             Collections.addAll(files, f);
+        }
 
         if (files.size() > 0) {
             Random rndm = new Random();
@@ -1779,7 +1898,7 @@ public class MizLib {
         return !(name.startsWith(".") && MizLib.getCharacterCountInString(name, '.') == 1) && !name.startsWith("._");
     }
 
-    public static boolean exists(String URLName){
+    public static boolean exists(String URLName) {
         try {
             HttpURLConnection.setFollowRedirects(false);
             HttpURLConnection con =
@@ -1787,14 +1906,14 @@ public class MizLib {
             con.setRequestMethod("HEAD");
             con.setConnectTimeout(10000);
             return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
 
     /**
      * Determines if the device uses navigation controls as the primary navigation from a number of factors.
+     *
      * @param context Application Context
      * @return True if the device uses navigation controls, false otherwise.
      */
@@ -1833,24 +1952,28 @@ public class MizLib {
     }
 
     public static String getPrettyTime(Context context, int minutes) {
-        if (minutes == 0)
-            return context.getString(R.string.stringNA);;
+        if (minutes == 0) {
+            return context.getString(R.string.stringNA);
+        }
+        ;
         try {
             int hours = (minutes / 60);
             minutes = (minutes % 60);
             String hours_string = hours + " " + context.getResources().getQuantityString(R.plurals.hour, hours, hours);
             String minutes_string = minutes + " " + context.getResources().getQuantityString(R.plurals.minute, minutes, minutes);
             if (hours > 0) {
-                if (minutes == 0)
+                if (minutes == 0) {
                     return hours_string;
-                else
+                } else {
                     return hours_string + " " + minutes_string;
+                }
             } else {
                 return minutes_string;
             }
         } catch (Exception e) { // Fall back if something goes wrong
-            if (minutes > 0)
+            if (minutes > 0) {
                 return String.valueOf(minutes);
+            }
             return context.getString(R.string.stringNA);
         }
     }
@@ -1931,23 +2054,28 @@ public class MizLib {
                 int firstDate = 0, secondDate = 0;
                 String first = "", second = "";
 
-                if (o1.getRawDate() != null)
+                if (o1.getRawDate() != null) {
                     first = o1.getRawDate().replace("-", "");
+                }
 
-                if (!TextUtils.isEmpty(first))
+                if (!TextUtils.isEmpty(first)) {
                     firstDate = Integer.valueOf(first);
+                }
 
-                if (o2.getRawDate() != null)
+                if (o2.getRawDate() != null) {
                     second = o2.getRawDate().replace("-", "");
+                }
 
-                if (!TextUtils.isEmpty(second))
+                if (!TextUtils.isEmpty(second)) {
                     secondDate = Integer.valueOf(second);
+                }
 
                 // This part is reversed to get the highest numbers first
-                if (firstDate < secondDate)
+                if (firstDate < secondDate) {
                     return 1; // First date is lower than second date - put it second
-                else if (firstDate > secondDate)
+                } else if (firstDate > secondDate) {
                     return -1; // First date is greater than second date - put it first
+                }
 
                 return 0; // They're equal
             }
@@ -1960,15 +2088,17 @@ public class MizLib {
     public static boolean isAdultContent(Context context, String title) {
         // Check if the user has enabled adult content - if so, nothing should
         // be blocked and the method should return false regardless of the title
-        if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(INCLUDE_ADULT_CONTENT, false))
+        if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(INCLUDE_ADULT_CONTENT, false)) {
             return false;
+        }
 
         String lowerCase = title.toLowerCase(Locale.getDefault());
 
         // Run through the keywords and check
         for (int i = 0; i < mAdultKeywords.length; i++)
-            if (lowerCase.contains(mAdultKeywords[i]))
+            if (lowerCase.contains(mAdultKeywords[i])) {
                 return true;
+            }
 
         // Certain titles include "XXX" (all caps), so test this against the normal-case title as a last check
         return title.contains("XXX");
@@ -1985,6 +2115,7 @@ public class MizLib {
     /**
      * Helper method to remove a ViewTreeObserver correctly, i.e.
      * avoiding the deprecated method on API level 16+.
+     *
      * @param vto
      * @param victim
      */

@@ -21,7 +21,7 @@ import java.io.InputStream;
 
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
-import jcifs.smb.SmbFileInputStreamOld;
+import jcifs.smb.SmbFileInputStream;
 
 public class StreamSource {
 
@@ -42,7 +42,7 @@ public class StreamSource {
 
 	public void open() throws IOException {
 		try {
-			input = new SmbFileInputStreamOld(file, bufferSize, 1);
+			input = new SmbFileInputStream(file);//, bufferSize, 1);
 			if (fp > 0)
 				input.skip(fp);
 		} catch (Exception e) {

@@ -28,14 +28,15 @@ import com.miz.mizuu.MizuuApplication;
 import com.miz.mizuu.R;
 import com.miz.mizuu.TvShow;
 import com.miz.mizuu.TvShowEpisode;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Collection;
 import java.util.List;
+
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static com.miz.functions.PreferenceKeys.SYNC_WITH_TRAKT;
 import static com.miz.functions.PreferenceKeys.TRAKT_PASSWORD;

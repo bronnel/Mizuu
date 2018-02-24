@@ -44,12 +44,13 @@ import com.miz.mizuu.MizuuApplication;
 import com.miz.mizuu.R;
 import com.miz.service.TraktMoviesSyncService;
 import com.miz.service.TraktTvShowsSyncService;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import org.json.JSONObject;
 
 import java.io.File;
+
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static com.miz.functions.PreferenceKeys.SYNC_WITH_TRAKT;
 import static com.miz.functions.PreferenceKeys.TRAKT_FULL_NAME;

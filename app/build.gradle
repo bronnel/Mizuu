@@ -9,6 +9,7 @@ android {
         applicationId "com.miz.mizuu"
         minSdkVersion 15
         targetSdkVersion 27
+        multiDexEnabled true
 
         testApplicationId "com.miz.test"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
@@ -46,42 +47,40 @@ repositories {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:27.0.2'
-    compile 'com.android.support:support-v4:27.0.2'
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:palette-v7:27.0.2'
-    compile 'com.android.support:recyclerview-v7:27.0.2'
-    compile 'com.android.support:cardview-v7:27.0.2'
-    compile 'com.google.guava:guava:24.0-android'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.squareup.okhttp:okhttp:2.7.2'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.okhttp3:okhttp:3.9.0'
-    compile 'com.squareup.okio:okio:1.13.0'
-    compile 'com.squareup:otto:1.3.4'
-    compile 'com.melnykov:floatingactionbutton:1.1.0'
-    compile 'com.github.ksoichiro:android-observablescrollview:1.4.0'
-    compile 'com.jpardogo.materialtabstrip:library:1.0.7'
-    //Cling (UPNP support)
     def JETTY_VERSION = "8.2.0.v20160908"
-    compile group: 'org.fourthline.cling', name: 'cling-core', version:'2.1.1'
-    compile group: 'org.fourthline.cling', name: 'cling-support', version:'2.1.1'
-    compile group: 'org.eclipse.jetty', name: 'jetty-server', version: JETTY_VERSION
-    compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version: JETTY_VERSION
-    compile group: 'org.eclipse.jetty', name: 'jetty-client', version: JETTY_VERSION
-    // compile files('libs/cling-core-1.0.5.jar')
-   // compile files('libs/cling-support-1.0.5.jar')
-    compile files('libs/jcifs.jar')
-    compile files('libs/teleal-common-1.0.13.jar')
+    def ANDROID_VERSION = "27.0.2"
+
+    implementation "com.android.support:support-v4:$ANDROID_VERSION"
+    implementation "com.android.support:support-v4:$ANDROID_VERSION"
+    implementation "com.android.support:appcompat-v7:$ANDROID_VERSION"
+    implementation "com.android.support:palette-v7:$ANDROID_VERSION"
+    implementation "com.android.support:recyclerview-v7:$ANDROID_VERSION"
+    implementation "com.android.support:cardview-v7:$ANDROID_VERSION"
+
+    implementation "com.google.guava:guava:24.0-android"
+
+    implementation "com.squareup.picasso:picasso:2.5.2"
+    implementation "com.squareup.retrofit2:retrofit:2.3.0"
+    implementation "com.squareup.okhttp3:okhttp:3.9.0"
+    implementation "com.squareup.okio:okio:1.13.0"
+    implementation "com.squareup:otto:1.3.4"
+    implementation "com.melnykov:floatingactionbutton:1.1.0"
+    implementation "com.github.ksoichiro:android-observablescrollview:1.4.0"
+    implementation "com.jpardogo.materialtabstrip:library:1.0.7"
+    //Cling (UPNP support)
+    implementation group: "org.fourthline.cling", name: "cling-core", version:"2.1.1"
+    implementation group: "org.fourthline.cling", name: "cling-support", version:"2.1.1"
+    implementation group: 'org.eclipse.jetty', name: 'jetty-server', version: JETTY_VERSION
+    implementation group: 'org.eclipse.jetty', name: 'jetty-servlet', version: JETTY_VERSION
+    implementation group: 'org.eclipse.jetty', name: 'jetty-client', version: JETTY_VERSION
+    //compile files('libs/teleal-common-1.0.13.jar')
+    //SMB
+    implementation('jcifs:jcifs:1.3.17'){
+        exclude group: "javax.servlet"
+    }
 
 /**
  * // Cling 2.0 dependencies on Android
- compile group: 'org.fourthline.cling', name: 'cling-core', version:'2.0.1'
- compile group: 'org.fourthline.cling', name: 'cling-support', version:'2.0.1'
- compile group: 'org.eclipse.jetty', name: 'jetty-server', version:'8.1.12.v20130726'
- compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version:'8.1.12.v20130726'
- compile group: 'org.eclipse.jetty', name: 'jetty-client', version:'8.1.12.v20130726'
  compile group: 'org.slf4j', name: 'slf4j-jdk14', version:'1.7.5'
  */
 
