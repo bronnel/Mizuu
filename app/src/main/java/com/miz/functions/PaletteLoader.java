@@ -2,13 +2,14 @@ package com.miz.functions;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.View;
 
-import com.melnykov.fab.FloatingActionButton;
 import com.miz.mizuu.MizuuApplication;
 import com.squareup.picasso.Picasso;
 
@@ -72,8 +73,8 @@ public class PaletteLoader extends AsyncTask<Void, Void, Palette> {
         if (palette == null) {
             try {
                 palette = Palette.from(mPicasso.load(getImage()).get()).generate();
-            } catch (IOException |IllegalStateException e) {
-                Log.d(TAG, "doInBackground: ",e);
+            } catch (IOException | IllegalStateException e) {
+                Log.d(TAG, "doInBackground: ", e);
             }
         }
 
@@ -88,11 +89,13 @@ public class PaletteLoader extends AsyncTask<Void, Void, Palette> {
 
             Palette.Swatch sw = result.getDarkVibrantSwatch();
 
-            if (sw == null)
+            if (sw == null) {
                 sw = result.getDarkMutedSwatch();
+            }
 
-            if (sw == null)
+            if (sw == null) {
                 sw = result.getVibrantSwatch();
+            }
 
             if (sw != null) {
                 // Set the found color
@@ -113,9 +116,9 @@ public class PaletteLoader extends AsyncTask<Void, Void, Palette> {
 
         // Set the FAB color, if a FAB has been set
         if (getFab() != null) {
-            mFab.setColorNormal(getSwatchColor());
-            mFab.setColorPressed(getSwatchColor());
-            mFab.setColorRipple(Color.parseColor("#80ffffff"));
+            mFab.setBackgroundTintList(ColorStateList.valueOf(getSwatchColor()));
+            mFab.setBackgroundColor(getSwatchColor());
+            mFab.setRippleColor(Color.parseColor("#80ffffff"));
         }
     }
 

@@ -32,6 +32,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
@@ -50,7 +51,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.melnykov.fab.FloatingActionButton;
 import com.miz.apis.trakt.Trakt;
 import com.miz.db.DbAdapterTvShowEpisodes;
 import com.miz.functions.BlurTransformation;
@@ -103,7 +103,8 @@ import static com.miz.functions.PreferenceKeys.SHOW_FILE_LOCATION;
     /**
      * Empty constructor as per the Fragment documentation
      */
-    public TvShowEpisodeDetailsFragment() {}
+    public TvShowEpisodeDetailsFragment() {
+    }
 
     public static TvShowEpisodeDetailsFragment newInstance(String showId, int season, int episode) {
         TvShowEpisodeDetailsFragment pageFragment = new TvShowEpisodeDetailsFragment();
@@ -223,8 +224,9 @@ import static com.miz.functions.PreferenceKeys.SHOW_FILE_LOCATION;
                 });
             }
         });
-        if (MizLib.isTablet(mContext))
+/*        if (MizLib.isTablet(mContext)){
             mFab.setType(FloatingActionButton.TYPE_NORMAL);
+        }*/
 
         final int height = MizLib.getActionBarAndStatusBarHeight(getActivity());
 
@@ -257,8 +259,9 @@ import static com.miz.functions.PreferenceKeys.SHOW_FILE_LOCATION;
         mPicasso.load(mEpisode.getEpisodePhoto()).placeholder(R.drawable.bg).config(MizuuApplication.getBitmapConfig()).into(mEpisodePhoto, new Callback() {
             @Override
             public void onError() {
-                if (!isAdded())
+                if (!isAdded()) {
                     return;
+                }
                 int width = getActivity().getResources().getDimensionPixelSize(R.dimen.episode_details_background_overlay_width);
                 int height = getActivity().getResources().getDimensionPixelSize(R.dimen.episode_details_background_overlay_height);
                 mPicasso.load(mEpisode.getTvShowBackdrop()).placeholder(R.drawable.bg).error(R.drawable.nobackdrop).resize(width, height).config(MizuuApplication.getBitmapConfig()).into(mEpisodePhoto);
@@ -292,20 +295,23 @@ import static com.miz.functions.PreferenceKeys.SHOW_FILE_LOCATION;
             }
         });
 
-        if (!MizLib.isPortrait(getActivity()))
+        if (!MizLib.isPortrait(getActivity())) {
             mPicasso.load(mEpisode.getEpisodePhoto()).placeholder(R.drawable.bg).error(R.drawable.bg).transform(new BlurTransformation(getActivity().getApplicationContext(), mEpisode.getEpisodePhoto().getAbsolutePath() + "-blur", 4)).into(mBackdrop, new Callback() {
                 @Override public void onError() {
-                    if (!isAdded())
+                    if (!isAdded()) {
                         return;
+                    }
 
                     mPicasso.load(mEpisode.getTvShowBackdrop()).placeholder(R.drawable.bg).error(R.drawable.nobackdrop).transform(new BlurTransformation(getActivity().getApplicationContext(), mEpisode.getTvShowBackdrop().getAbsolutePath() + "-blur", 4)).into(mBackdrop, new Callback() {
                         @Override
-                        public void onError() {}
+                        public void onError() {
+                        }
 
                         @Override
                         public void onSuccess() {
-                            if (!isAdded())
+                            if (!isAdded()) {
                                 return;
+                            }
                             mBackdrop.setColorFilter(Color.parseColor("#aa181818"), android.graphics.PorterDuff.Mode.SRC_OVER);
                         }
                     });
@@ -313,11 +319,13 @@ import static com.miz.functions.PreferenceKeys.SHOW_FILE_LOCATION;
 
                 @Override
                 public void onSuccess() {
-                    if (!isAdded())
+                    if (!isAdded()) {
                         return;
+                    }
                     mBackdrop.setColorFilter(Color.parseColor("#aa181818"), android.graphics.PorterDuff.Mode.SRC_OVER);
                 }
             });
+        }
     }
 
     private void loadData() {
@@ -357,8 +365,9 @@ import static com.miz.functions.PreferenceKeys.SHOW_FILE_LOCATION;
             mDescription.setEllipsize(TextUtils.TruncateAt.END);
             mDescription.setFocusable(true);
         } else {
-            if (MizLib.isTablet(getActivity()))
+            if (MizLib.isTablet(getActivity())) {
                 mDescription.setLineSpacing(0, 1.15f);
+            }
         }
         mDescription.setText(mEpisode.getDescription());
 
@@ -458,8 +467,9 @@ import static com.miz.functions.PreferenceKeys.SHOW_FILE_LOCATION;
         mVideoPlaybackEnded = System.currentTimeMillis();
 
         if (mVideoPlaybackStarted > 0 && mVideoPlaybackEnded - mVideoPlaybackStarted > (1000 * 60 * 5)) {
-            if (!mEpisode.hasWatched())
+            if (!mEpisode.hasWatched()) {
                 watched(false); // Mark it as watched
+            }
         }
     }
 
@@ -473,7 +483,8 @@ import static com.miz.functions.PreferenceKeys.SHOW_FILE_LOCATION;
             } else {
                 menu.findItem(R.id.watched).setTitle(R.string.stringMarkAsWatched);
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     @Override
@@ -586,15 +597,17 @@ import static com.miz.functions.PreferenceKeys.SHOW_FILE_LOCATION;
         if (mDatabaseHelper.setEpisodeWatchStatus(mEpisode.getShowId(), mEpisode.getSeason(), mEpisode.getEpisode(), mEpisode.hasWatched())) {
             getActivity().invalidateOptionsMenu();
 
-            if (showToast)
+            if (showToast) {
                 if (mEpisode.hasWatched()) {
                     Toast.makeText(getActivity(), getString(R.string.markedAsWatched), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.markedAsUnwatched), Toast.LENGTH_SHORT).show();
                 }
+            }
         } else {
-            if (showToast)
+            if (showToast) {
                 Toast.makeText(getActivity(), getString(R.string.errorOccured), Toast.LENGTH_SHORT).show();
+            }
         }
 
         mBus.post(mEpisode);

@@ -30,6 +30,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -49,7 +50,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.melnykov.fab.FloatingActionButton;
 import com.miz.apis.tmdb.TMDbTvShowService;
 import com.miz.apis.trakt.Trakt;
 import com.miz.base.MizActivity;
@@ -236,9 +236,9 @@ public class TvShowDetailsFragment extends Fragment {
                 });
             }
         });
-        if (MizLib.isTablet(mContext)) {
+        /*if (MizLib.isTablet(mContext)) {
             mFab.setType(FloatingActionButton.TYPE_NORMAL);
-        }
+        }*/
 
         // Get rid of these...
         v.findViewById(R.id.textView3).setVisibility(View.GONE); // File
