@@ -66,6 +66,9 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.ArrayList;
 
+import butterknife.BindColor;
+import butterknife.BindView;
+
 import static com.miz.functions.PreferenceKeys.STARTUP_SELECTION;
 import static com.miz.functions.PreferenceKeys.TRAKT_FULL_NAME;
 import static com.miz.functions.PreferenceKeys.TRAKT_USERNAME;
@@ -76,13 +79,17 @@ public class Main extends MizActivity {
     public static final int MOVIES = 1, SHOWS = 2;
     private int mNumMovies, mNumShows, selectedIndex, mStartup;
     private Typeface mTfMedium, mTfRegular;
-    private DrawerLayout mDrawerLayout;
-    protected ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private DbAdapterMovies mDbHelper;
     private DbAdapterTvShows mDbHelperTv;
     private ArrayList<MenuItem> mMenuItems = new ArrayList<MenuItem>();
     private Picasso mPicasso;
+
+    @BindColor(R.color.color_primary_dark) int primaryDark;
+
+    @BindView(R.id.listView1) protected ListView mDrawerList;
+    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @BindView(R.id.left_drawer) View leftDrawer;
 
     @Override
     protected int getLayoutResource() {
@@ -108,11 +115,9 @@ public class Main extends MizActivity {
 
         setupMenuItems();
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.color_primary_dark));
+        mDrawerLayout.setStatusBarBackgroundColor(primaryDark);
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_list_shadow, GravityCompat.START);
 
-        mDrawerList = (ListView) findViewById(R.id.listView1);
         mDrawerList.setLayoutParams(new FrameLayout.LayoutParams(ViewUtils.getNavigationDrawerWidth(this), FrameLayout.LayoutParams.MATCH_PARENT));
         mDrawerList.setAdapter(new MenuAdapter());
         mDrawerList.setOnItemClickListener(new OnItemClickListener() {
@@ -165,8 +170,9 @@ public class Main extends MizActivity {
     }
 
     private void loadFragment(int type) {
-        if (type == 0)
+        if (type == 0) {
             type = 1;
+        }
 
         Fragment frag = getSupportFragmentManager().findFragmentByTag("frag" + type);
         if (frag == null) {
@@ -194,8 +200,9 @@ public class Main extends MizActivity {
 
         selectListIndex(type);
 
-        if (mDrawerLayout != null)
+        if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawers();
+        }
     }
 
     @Override
@@ -204,10 +211,12 @@ public class Main extends MizActivity {
 
         if (!newIntent.hasExtra("fromUpdate")) {
             Intent i;
-            if (selectedIndex == MOVIES)
+            if (selectedIndex == MOVIES) {
                 i = new Intent("mizuu-movie-actor-search");
-            else // TV shows
+            } else // TV shows
+            {
                 i = new Intent("mizuu-shows-actor-search");
+            }
             i.putExtras(newIntent.getExtras());
             LocalBroadcastManager.getInstance(this).sendBroadcast(i);
         }
@@ -271,7 +280,8 @@ public class Main extends MizActivity {
                             ((BaseAdapter) mDrawerList.getAdapter()).notifyDataSetChanged();
                         }
                     });
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
             }
         }.start();
     }
@@ -290,7 +300,7 @@ public class Main extends MizActivity {
             return true;
         }
 
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 if (!mDrawerLayout.isDrawerOpen(mDrawerList)) {
                     mDrawerLayout.openDrawer(mDrawerList);
@@ -462,10 +472,11 @@ public class Main extends MizActivity {
                     icon.setColorFilter(Color.parseColor("#999999"));
                 }
 
-                if (mMenuItems.get(position).getCount() >= 0)
+                if (mMenuItems.get(position).getCount() >= 0) {
                     description.setText(String.valueOf(mMenuItems.get(position).getCount()));
-                else
+                } else {
                     description.setVisibility(View.GONE);
+                }
 
             } else {
                 convertView = mInflater.inflate(R.layout.menu_drawer_small_item, parent, false);
@@ -488,7 +499,7 @@ public class Main extends MizActivity {
 
     @Override
     public void onBackPressed() {
-        if (!mDrawerLayout.isDrawerOpen(findViewById(R.id.left_drawer))) {
+        if (!mDrawerLayout.isDrawerOpen(leftDrawer)) {
             super.onBackPressed();
         } else {
             mDrawerLayout.closeDrawers();

@@ -23,18 +23,20 @@ import android.support.v7.widget.Toolbar;
 import com.miz.functions.MizLib;
 import com.miz.mizuu.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public abstract class MizActivity extends AppCompatActivity {
 
-    public Toolbar mToolbar;
+    @BindView(R.id.toolbar) public Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getLayoutResource() > 0) {
             setContentView(getLayoutResource());
+            ButterKnife.bind(this);
 
-            mToolbar = (Toolbar) findViewById(R.id.toolbar);
             if (mToolbar != null) {
                 setSupportActionBar(mToolbar);
             }

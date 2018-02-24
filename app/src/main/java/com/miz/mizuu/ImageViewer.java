@@ -24,7 +24,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnSystemUiVisibilityChangeListener;
@@ -36,14 +35,15 @@ import com.miz.utils.ViewUtils;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import butterknife.BindView;
+
 public class ImageViewer extends MizActivity {
 
-    private ViewPager mViewPager;
+    @BindView(R.id.awesomepager) ViewPager mViewPager;
     private boolean mPortraitPhotos;
     private String[] mPhotos;
     private Bus mBus;
     private Handler mHandler = new Handler();
-    private Toolbar mToolbar;
     private Runnable mHideSystemUiRunnable = new Runnable() {
         @Override
         public void run() {
@@ -63,7 +63,6 @@ public class ImageViewer extends MizActivity {
 
         ViewUtils.setupWindowFlagsForStatusbarOverlay(getWindow(), true);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         ViewUtils.setProperToolbarSize(this, mToolbar);
@@ -77,7 +76,6 @@ public class ImageViewer extends MizActivity {
 
         getSupportActionBar().setTitle((getIntent().getIntExtra("selectedIndex", 0) + 1) + " " + getString(R.string.of) + " " + mPhotos.length);
 
-        mViewPager = (ViewPager) findViewById(R.id.awesomepager);
         mViewPager.setPageMargin(MizLib.convertDpToPixels(getApplicationContext(), 16));
         mViewPager.setAdapter(new ActorPhotosAdapter(getSupportFragmentManager()));
         mViewPager.setOnPageChangeListener(new SimpleOnPageChangeListener() {
