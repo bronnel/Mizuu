@@ -22,7 +22,6 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +36,8 @@ import com.miz.service.MovieLibraryUpdate;
 import com.miz.service.TvShowsLibraryUpdate;
 import com.miz.utils.TypefaceUtils;
 
+import butterknife.BindView;
+
 import static com.miz.functions.PreferenceKeys.CLEAR_LIBRARY_MOVIES;
 import static com.miz.functions.PreferenceKeys.CLEAR_LIBRARY_TVSHOWS;
 import static com.miz.functions.PreferenceKeys.REMOVE_UNAVAILABLE_FILES_MOVIES;
@@ -44,14 +45,17 @@ import static com.miz.functions.PreferenceKeys.REMOVE_UNAVAILABLE_FILES_TVSHOWS;
 
 public class Update extends MizActivity {
 
-    private Button mFileSourcesButton, mUpdateLibraryButton;
-    private TextView mFileSourcesDescription, mUpdateLibraryDescription;
-    private CheckBox mClearLibrary, mRemoveUnavailableFiles;
+    @BindView(R.id.select_file_sources_button) Button mFileSourcesButton;
+    @BindView(R.id.start_update_button) Button mUpdateLibraryButton;
+    @BindView(R.id.file_sources_description) TextView mFileSourcesDescription;
+    @BindView(R.id.update_library_description) TextView mUpdateLibraryDescription;
+
+    @BindView(R.id.checkBox) CheckBox mClearLibrary;
+    @BindView(R.id.checkBox2) CheckBox mRemoveUnavailableFiles;
     private Editor mEditor;
     private SharedPreferences mSharedPreferences;
     private boolean mIsMovie;
     private Typeface mTypeface;
-    private Toolbar mToolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,9 +63,9 @@ public class Update extends MizActivity {
 
         mIsMovie = getIntent().getExtras().getBoolean("isMovie");
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (!mIsMovie)
+        if (!mIsMovie) {
             mToolbar.setTitle(getString(R.string.updateTvShowsTitle));
+        }
 
         setSupportActionBar(mToolbar);
 
@@ -69,24 +73,18 @@ public class Update extends MizActivity {
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        mClearLibrary = (CheckBox) findViewById(R.id.checkBox);
         mClearLibrary.setTypeface(mTypeface);
         mClearLibrary.setChecked(false);
         mClearLibrary.setOnCheckedChangeListener(getOnCheckedChangeListener(true));
 
-        mRemoveUnavailableFiles = (CheckBox) findViewById(R.id.checkBox2);
         mRemoveUnavailableFiles.setTypeface(mTypeface);
         mRemoveUnavailableFiles.setChecked(false);
         mRemoveUnavailableFiles.setOnCheckedChangeListener(getOnCheckedChangeListener(false));
 
-        mFileSourcesDescription = (TextView) findViewById(R.id.file_sources_description);
         mFileSourcesDescription.setTypeface(mTypeface);
-        mUpdateLibraryDescription = (TextView) findViewById(R.id.update_library_description);
         mUpdateLibraryDescription.setTypeface(mTypeface);
 
-        mFileSourcesButton = (Button) findViewById(R.id.select_file_sources_button);
         mFileSourcesButton.setTypeface(mTypeface);
-        mUpdateLibraryButton = (Button) findViewById(R.id.start_update_button);
         mUpdateLibraryButton.setTypeface(mTypeface);
     }
 
@@ -100,10 +98,11 @@ public class Update extends MizActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mEditor = mSharedPreferences.edit();
-                if (clearLibrary)
+                if (clearLibrary) {
                     mEditor.putBoolean(mIsMovie ? CLEAR_LIBRARY_MOVIES : CLEAR_LIBRARY_TVSHOWS, isChecked);
-                else
+                } else {
                     mEditor.putBoolean(mIsMovie ? REMOVE_UNAVAILABLE_FILES_MOVIES : REMOVE_UNAVAILABLE_FILES_TVSHOWS, isChecked);
+                }
                 mEditor.apply();
             }
         };
@@ -118,10 +117,11 @@ public class Update extends MizActivity {
     }
 
     public void startUpdate(View v) {
-        if (mIsMovie && !MizLib.isMovieLibraryBeingUpdated(this))
+        if (mIsMovie && !MizLib.isMovieLibraryBeingUpdated(this)) {
             getApplicationContext().startService(new Intent(getApplicationContext(), MovieLibraryUpdate.class));
-        else if (!mIsMovie && !MizLib.isTvShowLibraryBeingUpdated(this))
+        } else if (!mIsMovie && !MizLib.isTvShowLibraryBeingUpdated(this)) {
             getApplicationContext().startService(new Intent(getApplicationContext(), TvShowsLibraryUpdate.class));
+        }
         setResult(1); // end activity and reload Main activity
 
         finish(); // Leave the Update screen once the update has been started
